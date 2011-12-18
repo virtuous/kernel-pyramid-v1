@@ -842,21 +842,14 @@ static void __init cpufreq_table_init(void) {}
 
 static unsigned int __init select_freq_plan(void)
 {
-	uint32_t raw_speed_bin, speed_bin, max_khz;
+	uint32_t max_khz;
 	struct clkctl_acpu_speed *f;
 
 	acpu_freq_tbl = acpu_freq_tbl_v2;
 	l2_freq_tbl = l2_freq_tbl_v2;
 	l2_freq_tbl_size = ARRAY_SIZE(l2_freq_tbl_v2);
 
-	raw_speed_bin = readl(QFPROM_SPEED_BIN_ADDR);
-	speed_bin = raw_speed_bin & 0xF;
-	if (speed_bin == 0xF)
-		speed_bin = (raw_speed_bin >> 4) & 0xF;
-	if (speed_bin == 0x1)
-		max_khz = 1512000;
-	else
-		max_khz = 1512000;
+	max_khz = 1512000;
 
 	/* Truncate the table based to max_khz. */
 	for (f = acpu_freq_tbl; f->acpuclk_khz != 0; f++) {
